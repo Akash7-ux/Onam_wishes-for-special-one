@@ -1,0 +1,1458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Onam, Sowmi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --forest:#fffaf0;
+    --forest-2:#f8edcf;
+    --forest-3:#eed89d;
+    --ivory:#fffdf7;
+    --ivory-2:#fbf3df;
+    --gold:#c39220;
+    --gold-light:#b57f14;
+    --gold-dim:#8d6818;
+    --saffron:#d8a11f;
+    --leaf:#c7a23a;
+    --yellow:#f2c94c;
+    --text-dark:#352816;
+    --text-soft:#725d34;
+    --white-gold:#fff7df;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  html, body{min-width:320px;}
+  button, input, textarea, select{font:inherit;}
+  button{touch-action:manipulation;}
+  body{
+    background:
+      radial-gradient(circle at 18% 8%, rgba(242,201,76,.22), transparent 30vw),
+      radial-gradient(circle at 82% 12%, rgba(195,146,32,.14), transparent 34vw),
+      linear-gradient(180deg, var(--ivory) 0%, var(--ivory-2) 100%);
+    color:var(--text-dark);
+    font-family:'Jost',sans-serif;
+    overflow-x:hidden;
+    width:100%;
+  }
+  p, h1, h2, h3, button{overflow-wrap:anywhere;}
+  body::before{
+    content:'';
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    z-index:0;
+    opacity:.36;
+    background-image:
+      radial-gradient(circle at center, rgba(195,146,32,.18) 0 1px, transparent 1.4px);
+    background-size:34px 34px;
+    mask-image:linear-gradient(180deg, transparent, #000 18%, #000 82%, transparent);
+  }
+  .serif{font-family:'Cormorant Garamond',serif;}
+  ::selection{background:var(--gold); color:white;}
+
+  /* ---------- utility ---------- */
+  .section{
+    position:relative;
+    min-height:100vh;
+    min-height:100svh;
+    width:100%;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    padding:6vh 6vw;
+    padding:clamp(4rem, 7vh, 6rem) clamp(1.25rem, 6vw, 5rem);
+    overflow:hidden;
+  }
+  @supports (min-height:100dvh){
+    .section{min-height:100dvh;}
+  }
+  .section > *{position:relative; z-index:2;}
+  .section::after{
+    content:'';
+    position:absolute;
+    inset:auto 8vw 0;
+    height:1px;
+    background:linear-gradient(90deg, transparent, rgba(195,146,32,.42), transparent);
+    z-index:1;
+  }
+  .eyebrow{
+    font-size:.72rem;
+    letter-spacing:.35em;
+    text-transform:uppercase;
+    color:var(--gold);
+    font-weight:400;
+    margin-bottom:1.4rem;
+    opacity:.85;
+  }
+  .heading{
+    font-family:'Cormorant Garamond',serif;
+    font-weight:500;
+    font-size:clamp(2rem,5vw,3.4rem);
+    text-align:center;
+    line-height:1.25;
+    overflow-wrap:break-word;
+  }
+  .body-text{
+    font-family:'Cormorant Garamond',serif;
+    font-weight:400;
+    font-size:clamp(1.15rem,2.2vw,1.55rem);
+    line-height:1.9;
+    text-align:center;
+    max-width:640px;
+    color:inherit;
+    overflow-wrap:break-word;
+  }
+  .fade-line{opacity:0; transform:translateY(24px); filter:blur(4px);}
+
+  .petal{
+    position:absolute;
+    top:-8%;
+    font-size:20px;
+    line-height:1;
+    opacity:.9;
+    pointer-events:none;
+    z-index:2;
+    filter:drop-shadow(0 3px 5px rgba(141,104,24,.24));
+    transition:opacity .4s ease;
+  }
+  @keyframes petalFall{
+    0%{ transform:translate3d(0,-12vh,0) rotate(0deg) scale(.82); opacity:0; }
+    9%{ opacity:.9; }
+    25%{ transform:translate3d(calc(var(--drift) * .32), 20vh, 0) rotate(calc(var(--spin) * .28)) scale(1); }
+    48%{ transform:translate3d(calc(var(--drift) * -.36), 45vh, 0) rotate(calc(var(--spin) * .54)) scale(.9); }
+    72%{ transform:translate3d(calc(var(--drift) * .64), 74vh, 0) rotate(calc(var(--spin) * .78)) scale(1.04); }
+    92%{ opacity:.72; }
+    100%{ transform:translate3d(var(--drift),112vh,0) rotate(var(--spin)) scale(.88); opacity:0; }
+  }
+
+  /* ---------- butterfly ---------- */
+  .butterfly{
+    position:fixed;
+    top:40%; left:10%;
+    font-size:24px;
+    z-index:40;
+    pointer-events:none;
+    opacity:0;
+    filter:drop-shadow(0 3px 8px rgba(195,146,32,.32));
+    will-change:transform;
+  }
+  .butterfly .bob{
+    display:inline-block;
+    animation:bob 1.6s ease-in-out infinite;
+  }
+  @keyframes bob{
+    0%,100%{ transform:translateY(0) rotate(0deg); }
+    50%{ transform:translateY(-7px) rotate(6deg); }
+  }
+  .butterfly .flap{
+    display:inline-block;
+    animation:flap 0.42s ease-in-out infinite;
+  }
+  #butterfly2{ font-size:19px; }
+  #butterfly2 .bob{ animation-duration:1.9s; }
+  @keyframes flap{
+    0%,100%{transform:scaleX(1) rotate(0deg);}
+    50%{transform:scaleX(.72) rotate(-4deg);}
+  }
+
+  /* ---------- 0 opening ---------- */
+  #opening{
+    background:
+      linear-gradient(90deg, rgba(255,253,248,.94) 0%, rgba(255,247,223,.8) 44%, rgba(255,253,248,.92) 100%),
+      url('lamp-bg.png');
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+    cursor:default;
+  }
+  #opening .body-text{opacity:0;}
+  .enter-btn{
+    margin-top:3rem;
+    background:linear-gradient(135deg, #fffaf0 0%, #f5d980 45%, #c39220 100%);
+    border:1px solid rgba(141,104,24,.42);
+    color:var(--text-dark);
+    font-family:'Jost',sans-serif;
+    letter-spacing:.28em;
+    text-transform:uppercase;
+    font-size:.78rem;
+    padding:1rem 2.4rem;
+    max-width:min(100%, 420px);
+    text-align:center;
+    white-space:normal;
+    border-radius:999px;
+    box-shadow:0 14px 32px -20px rgba(141,104,24,.6), inset 0 1px 0 rgba(255,255,255,.7);
+    cursor:pointer;
+    opacity:0;
+    transition:all .5s cubic-bezier(.22,1,.36,1);
+  }
+  .enter-btn:hover{border-color:var(--gold); letter-spacing:.34em; transform:translateY(-3px); box-shadow:0 18px 42px -18px rgba(141,104,24,.72), inset 0 1px 0 rgba(255,255,255,.8);}
+
+  #main-site{display:none;}
+
+  /* ---------- 1 hero ---------- */
+  #hero{
+    background:
+      linear-gradient(180deg, rgba(255,253,247,.58) 0%, rgba(255,247,223,.5) 48%, rgba(255,253,247,.92) 100%),
+      url('hero-bg.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+  .hero-arch{
+    position:absolute;
+    bottom:0; left:50%; transform:translateX(-50%);
+    width:min(90vw,760px);
+    height:60%;
+    background:
+      radial-gradient(circle at 50% 100%, rgba(201,163,105,.18), transparent 55%);
+    border-radius:50% 50% 0 0 / 20% 20% 0 0;
+    z-index:0;
+  }
+  .hero-content{
+    position:relative;
+    z-index:3;
+    text-align:center;
+    width:min(100%, 760px);
+    margin-inline:auto;
+  }
+  .hero-title{
+    font-family:'Cormorant Garamond',serif;
+    font-weight:500;
+    font-size:clamp(2.4rem,7vw,4.6rem);
+    margin-bottom:1.2rem;
+    color:var(--text-dark);
+    text-shadow:0 2px 24px rgba(255,255,255,.75);
+  }
+  .hero-sub{
+    font-family:'Jost',sans-serif;
+    font-weight:300;
+    font-size:clamp(.95rem,1.6vw,1.15rem);
+    letter-spacing:.03em;
+    color:var(--gold-dim);
+    max-width:480px;
+    margin:0 auto;
+    text-wrap:balance;
+  }
+  .scroll-cue{
+    position:absolute; bottom:6vh; left:50%; transform:translateX(-50%);
+    font-size:.72rem; letter-spacing:.3em; color:var(--gold-dim);
+    display:flex; flex-direction:column; align-items:center; gap:.5rem;
+  }
+  .scroll-cue span{
+    width:1px; height:26px; background:var(--gold-dim);
+    animation:pulse-line 2s ease-in-out infinite;
+  }
+  @keyframes pulse-line{0%,100%{opacity:.3;}50%{opacity:1;}}
+
+  /* pookalam ring behind hero */
+  .pookalam-ring{
+    position:absolute; z-index:0;
+    width:70vmin; height:70vmin;
+    border-radius:50%;
+    border:1px dashed rgba(195,146,32,.36);
+    top:52%; left:50%; transform:translate(-50%,-50%);
+  }
+  .pookalam-ring::before{
+    content:'';
+    position:absolute; inset:8%;
+    border-radius:50%;
+    border:1px dashed rgba(216,161,31,.3);
+  }
+  .pookalam-ring::after{
+    content:'';
+    position:absolute; inset:18%;
+    border-radius:50%;
+    background:repeating-conic-gradient(from 8deg, rgba(195,146,32,.28) 0deg 9deg, transparent 9deg 18deg);
+    -webkit-mask:radial-gradient(circle, transparent 44%, #000 45% 49%, transparent 50%);
+    mask:radial-gradient(circle, transparent 44%, #000 45% 49%, transparent 50%);
+    animation:mandalaPetals 36s linear infinite;
+  }
+  @keyframes mandalaPetals{
+    from{ transform:rotate(0deg); }
+    to{ transform:rotate(360deg); }
+  }
+
+  /* ---------- 2 message / 4 wish ivory sections ---------- */
+  .ivory-section{
+    background:
+      linear-gradient(180deg, rgba(255,253,248,.88) 0%, rgba(255,247,223,.88) 100%),
+      url('temple-bg.png');
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+    color:var(--text-dark);
+  }
+  .ivory-section .eyebrow{color:var(--saffron);}
+  .msg-line{
+    font-family:'Cormorant Garamond',serif;
+    font-size:clamp(1.25rem,2.6vw,1.85rem);
+    line-height:1.85;
+    text-align:center;
+    max-width:680px;
+    color:var(--text-dark);
+    font-style:italic;
+    font-weight:400;
+  }
+  .msg-line.strong{font-style:normal; font-weight:500;}
+
+  /* ---------- 4 onam wish ---------- */
+  #wish{
+    background:
+      linear-gradient(90deg, rgba(255,253,248,.93) 0%, rgba(255,247,223,.74) 52%, rgba(255,253,248,.92) 100%),
+      url('lamp-bg.png');
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+    color:var(--text-dark);
+  }
+
+  /* ---------- 5 interactive pookalam ---------- */
+  #pookalam-section{
+    background:
+      radial-gradient(ellipse at 50% 42%, rgba(242,201,76,.22) 0%, transparent 46%),
+      linear-gradient(180deg,#fffdf8 0%, #fbf0cf 100%);
+    color:var(--text-dark);
+  }
+  #opening-lines{
+    width:min(100%, 780px);
+    margin-inline:auto;
+    text-align:center;
+  }
+  .pookalam-wrap{
+    position:relative;
+    width:min(78vw,480px);
+    height:min(78vw,480px);
+    margin-top:2rem;
+    filter:drop-shadow(0 22px 34px rgba(141,104,24,.16));
+    animation:pookalamBreath 6s ease-in-out infinite;
+  }
+  .pookalam-wrap::before,
+  .pookalam-wrap::after{
+    content:'';
+    position:absolute;
+    inset:8%;
+    border-radius:50%;
+    border:1px solid rgba(195,146,32,.24);
+    pointer-events:none;
+  }
+  .pookalam-wrap::after{
+    inset:18%;
+    border-style:dashed;
+    animation:mandalaInnerSpin 28s linear infinite reverse;
+  }
+  @keyframes pookalamBreath{
+    0%,100%{ transform:scale(1); }
+    50%{ transform:scale(1.025); }
+  }
+  @keyframes mandalaInnerSpin{
+    from{ transform:rotate(0deg); }
+    to{ transform:rotate(360deg); }
+  }
+  .pk-ring{
+    position:absolute; inset:0;
+    border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .pk-flower{
+    position:absolute;
+    width:26px; height:26px;
+    margin-left:-13px;
+    margin-top:-13px;
+    border-radius:50%;
+    cursor:pointer;
+    opacity:0;
+    transform:scale(.3);
+    transition:transform .3s ease;
+  }
+  .pk-flower:hover{transform:scale(1.25);}
+  .pk-msg{
+    position:absolute;
+    bottom:-2.6rem; left:50%; transform:translateX(-50%);
+    white-space:nowrap;
+    font-family:'Cormorant Garamond',serif;
+    font-size:1.05rem;
+    color:var(--gold-dim);
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .4s ease;
+  }
+  .pk-flower.active .pk-msg{opacity:1;}
+  .pk-center{
+    width:14px;height:14px;border-radius:50%;
+    background:var(--yellow);
+    box-shadow:0 0 30px 12px rgba(239,196,78,.3);
+  }
+
+  /* ---------- petal-catch mini game ---------- */
+  #petal-game{
+    background:
+      radial-gradient(ellipse at 50% 30%, rgba(242,201,76,.2) 0%, transparent 45%),
+      linear-gradient(180deg,#fffaf0 0%, #fffdf8 100%);
+    color:var(--text-dark);
+  }
+  .game-hud{
+    display:none;
+    flex-wrap:wrap;
+    justify-content:space-between;
+    width:min(92vw,480px);
+    margin-top:1.4rem;
+    font-family:'Jost',sans-serif;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    font-size:.74rem;
+    color:var(--gold-dim);
+    gap:.5rem;
+  }
+  .game-hud span{white-space:nowrap;}
+  .game-hud b{color:var(--yellow); font-weight:500;}
+  .game-area{
+    position:relative;
+    width:min(92vw,480px);
+    height:50vh;
+    max-height:420px;
+    min-height:280px;
+    margin-top:1rem;
+    border:1px solid rgba(201,163,105,.35);
+    border-radius:12px;
+    overflow:hidden;
+    background:
+      radial-gradient(circle at 50% 0%, rgba(242,201,76,.18), transparent 50%),
+      linear-gradient(180deg, rgba(255,253,247,.82), rgba(251,240,207,.72));
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition:box-shadow .4s ease, border-color .4s ease;
+  }
+  .game-area.active{
+    border-color:rgba(195,146,32,.64);
+    animation:gameGlow 2.6s ease-in-out infinite;
+  }
+  @keyframes gameGlow{
+    0%,100%{ box-shadow:0 0 0 0 rgba(195,146,32,0), inset 0 0 24px rgba(195,146,32,.08); }
+    50%{ box-shadow:0 0 30px 2px rgba(195,146,32,.26), inset 0 0 36px rgba(195,146,32,.16); }
+  }
+  .game-area.miss-flash{
+    animation:missFlash .28s ease-out;
+  }
+  @keyframes missFlash{
+    0%{ box-shadow:inset 0 0 0 2px rgba(226,152,76,.55); }
+    100%{ box-shadow:inset 0 0 0 2px rgba(226,152,76,0); }
+  }
+  .game-placeholder{
+    color:var(--gold-dim);
+    font-family:'Cormorant Garamond',serif;
+    font-style:italic;
+    font-size:1.1rem;
+    text-align:center;
+    padding:0 1.6rem;
+  }
+  .game-petal{
+    position:absolute;
+    top:-40px;
+    font-size:26px;
+    line-height:1;
+    cursor:pointer;
+    user-select:none;
+    touch-action:manipulation;
+    filter:drop-shadow(0 3px 5px rgba(141,104,24,.22));
+    animation-timing-function:linear;
+    animation-fill-mode:forwards;
+    z-index:2;
+  }
+  .game-petal.golden{
+    font-size:30px;
+    filter:drop-shadow(0 0 10px rgba(239,196,78,.85)) drop-shadow(0 3px 5px rgba(141,104,24,.22));
+  }
+  @keyframes gamePetalFall{
+    0%{ top:-40px; translate:0 0; rotate:0deg; }
+    50%{ translate:calc(var(--drift,0) * 1px) 0; rotate:14deg; }
+    100%{ top:100%; translate:0 0; rotate:-12deg; }
+  }
+  @keyframes goldenPulse{
+    0%,100%{ scale:1; }
+    50%{ scale:1.16; }
+  }
+  .game-plus{
+    position:absolute;
+    font-family:'Cormorant Garamond',serif;
+    font-weight:600;
+    font-size:1.1rem;
+    color:var(--gold-dim);
+    pointer-events:none;
+    animation:plusFloat .8s ease-out forwards;
+    z-index:3;
+  }
+  @keyframes plusFloat{
+    0%{opacity:1; transform:translateY(0);}
+    100%{opacity:0; transform:translateY(-30px);}
+  }
+  .game-spark{
+    position:absolute;
+    width:5px; height:5px;
+    border-radius:50%;
+    background:var(--yellow);
+    box-shadow:0 0 6px 2px rgba(239,196,78,.6);
+    pointer-events:none;
+    z-index:3;
+    animation:sparkOut .55s ease-out forwards;
+  }
+  @keyframes sparkOut{
+    0%{ opacity:1; transform:translate(0,0) scale(1); }
+    100%{ opacity:0; transform:translate(var(--sx),var(--sy)) scale(.3); }
+  }
+  .game-combo-toast{
+    position:absolute;
+    top:14px; left:50%;
+    transform:translateX(-50%);
+    font-family:'Cormorant Garamond',serif;
+    font-weight:600;
+    font-size:1.2rem;
+    color:var(--yellow);
+    text-shadow:0 0 12px rgba(239,196,78,.6);
+    pointer-events:none;
+    z-index:4;
+    animation:comboToast 1.1s ease-out forwards;
+  }
+  @keyframes comboToast{
+    0%{ opacity:0; transform:translate(-50%,6px) scale(.9); }
+    18%{ opacity:1; transform:translate(-50%,0) scale(1.05); }
+    75%{ opacity:1; }
+    100%{ opacity:0; transform:translate(-50%,-10px) scale(1); }
+  }
+  .game-result{
+    font-family:'Cormorant Garamond',serif;
+    font-size:1.15rem;
+    color:var(--gold-dim);
+    text-align:center;
+    margin-top:1.4rem;
+    min-height:1.6rem;
+  }
+
+  /* ---------- 7 just for you ---------- */
+  #justforyou{
+    background:
+      linear-gradient(180deg, rgba(255,253,248,.9) 0%, rgba(255,247,223,.82) 100%),
+      url('kathakali-bg.png');
+    background-size:cover;
+    background-position:center 28%;
+    background-repeat:no-repeat;
+    color:var(--text-dark);
+  }
+  .whisper{
+    font-family:'Cormorant Garamond',serif;
+    font-style:italic;
+    font-size:clamp(1.05rem,1.8vw,1.3rem);
+    color:var(--gold-dim);
+    margin-top:2rem;
+    text-align:center;
+    opacity:.9;
+  }
+
+  /* ---------- 8 little wishes cards ---------- */
+  #little-wishes{
+    background:
+      radial-gradient(circle at 88% 20%, rgba(242,201,76,.18), transparent 28vw),
+      linear-gradient(180deg, var(--ivory-2), #fffdf8);
+    color:var(--text-dark);
+  }
+  .cards-grid{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(200px,260px));
+    gap:1.6rem;
+    margin-top:3rem;
+    width:min(100%, 560px);
+  }
+  @media(max-width:600px){.cards-grid{grid-template-columns:1fr; width:100%; max-width:320px;}}
+  .wish-card{
+    background:rgba(255,255,255,.78);
+    backdrop-filter:blur(6px);
+    border:1px solid rgba(201,163,105,.4);
+    border-radius:8px;
+    padding:2.2rem 1.6rem;
+    text-align:center;
+    opacity:0;
+    transform:translateY(30px) rotate(-3deg);
+    transition:transform .4s ease, box-shadow .4s ease;
+  }
+  .wish-card:hover{transform:translateY(-8px) rotate(0deg); box-shadow:0 20px 42px -20px rgba(141,104,24,.42);}
+  .wish-card h3{
+    font-family:'Cormorant Garamond',serif;
+    font-weight:500;
+    font-size:1.5rem;
+    color:var(--saffron);
+    margin-bottom:.8rem;
+  }
+  .wish-card p{
+    font-family:'Cormorant Garamond',serif;
+    font-size:1.08rem;
+    line-height:1.7;
+    color:var(--text-soft);
+  }
+
+  /* ---------- 9 final cinematic ---------- */
+  #final-message{
+    background:
+      linear-gradient(180deg, rgba(255,253,248,.9) 0%, rgba(255,247,223,.82) 100%),
+      url('temple-bg.png');
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+    color:var(--text-dark);
+  }
+
+  /* ---------- 10 final screen ---------- */
+  #final-screen{
+    background:
+      linear-gradient(180deg, rgba(255,253,247,.72) 0%, rgba(255,247,223,.66) 48%, rgba(255,253,247,.94) 100%),
+      url('maveli-bg.jpg.jpeg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    color:var(--text-dark);
+  }
+  .final-title{
+    font-family:'Cormorant Garamond',serif;
+    font-weight:500;
+    font-size:clamp(2.6rem,7vw,4.6rem);
+    margin-bottom:1rem;
+  }
+  .signature{
+    margin-top:3.4rem;
+    font-size:.78rem;
+    letter-spacing:.18em;
+    color:var(--gold-dim);
+    text-transform:uppercase;
+    text-align:center;
+    overflow-wrap:break-word;
+  }
+  .replay-btn{
+    margin-top:2.2rem;
+    background:none; border:none;
+    color:var(--gold-dim);
+    font-family:'Jost',sans-serif;
+    letter-spacing:.2em;
+    font-size:.78rem;
+    text-transform:uppercase;
+    cursor:pointer;
+    opacity:.75;
+    transition:opacity .3s, letter-spacing .3s;
+  }
+  .replay-btn:hover{opacity:1; letter-spacing:.28em;}
+
+  /* ---------- music toggle ---------- */
+  #music-toggle{
+    position:fixed;
+    bottom:24px; right:24px;
+    z-index:50;
+    width:46px; height:46px;
+    border-radius:50%;
+    border:1px solid rgba(201,163,105,.5);
+    background:rgba(255,253,247,.78);
+    backdrop-filter:blur(6px);
+    display:flex; align-items:center; justify-content:center;
+    cursor:pointer;
+    box-shadow:0 10px 28px -18px rgba(141,104,24,.75);
+    transition:border-color .3s, transform .3s;
+  }
+  #music-toggle:hover{border-color:var(--gold); transform:translateY(-2px);}
+  #music-toggle svg{width:18px; height:18px;}
+  .music-bar{
+    width:2.5px; background:var(--gold); margin:0 1.5px;
+    display:inline-block;
+    animation:bar 1.1s ease-in-out infinite;
+  }
+  .music-bar:nth-child(2){animation-delay:.2s;}
+  .music-bar:nth-child(3){animation-delay:.4s;}
+  @keyframes bar{0%,100%{height:6px;}50%{height:14px;}}
+  .music-bars{display:flex; align-items:flex-end; height:16px;}
+  .music-bars.paused .music-bar{animation-play-state:paused; height:4px;}
+
+  @media(max-width:900px){
+    .section{
+      padding:clamp(3.5rem, 7vh, 5rem) clamp(1rem, 5vw, 2rem);
+    }
+    .heading{font-size:clamp(1.9rem, 7vw, 3rem);}
+    .body-text{font-size:clamp(1.08rem, 4vw, 1.35rem); line-height:1.75;}
+    .hero-title{font-size:clamp(2.25rem, 10vw, 4rem);}
+    .final-title{font-size:clamp(2.3rem, 10vw, 4rem);}
+    .pookalam-ring{width:84vmin; height:84vmin; opacity:.82;}
+    .pookalam-wrap{width:min(86vw,440px); height:min(86vw,440px);}
+    .game-area{width:min(94vw,520px); height:48svh;}
+    .game-hud{width:min(94vw,520px);}
+    .cards-grid{grid-template-columns:repeat(2,minmax(0,1fr)); width:min(92vw,560px);}
+    #opening{background-position:center;}
+    #hero{background-position:center;}
+    .ivory-section,
+    #final-message{background-position:center;}
+    #wish{background-position:center;}
+    #justforyou{background-position:center top;}
+    #final-screen{background-position:center;}
+  }
+
+  @media(max-width:600px){
+    body::before{background-size:28px 28px; opacity:.24;}
+    .section{
+      justify-content:center;
+      padding:clamp(3.25rem, 8svh, 4.5rem) 1rem clamp(4rem, 9svh, 5rem);
+    }
+    .eyebrow{
+      font-size:.66rem;
+      letter-spacing:.22em;
+      margin-bottom:1rem;
+      text-align:center;
+    }
+    .heading{font-size:clamp(1.8rem, 9vw, 2.55rem); line-height:1.18;}
+    .body-text{max-width:32rem; font-size:clamp(1.02rem, 4.8vw, 1.22rem); line-height:1.68; text-wrap:pretty;}
+    .msg-line{font-size:clamp(1.1rem, 5vw, 1.38rem); line-height:1.65;}
+    .hero-title{font-size:clamp(2rem, 12vw, 3.2rem); line-height:1.08;}
+    .hero-sub{font-size:.96rem; max-width:22rem;}
+    .enter-btn{
+      width:min(100%, 320px);
+      min-height:48px;
+      padding:.95rem 1.1rem;
+      letter-spacing:.16em;
+      font-size:.72rem;
+    }
+    .enter-btn:hover{letter-spacing:.18em;}
+    .scroll-cue{bottom:3.8vh; font-size:.62rem; letter-spacing:.22em;}
+    .scroll-cue span{height:20px;}
+    .pookalam-ring{width:94vmin; height:94vmin; opacity:.58;}
+    .pookalam-wrap{width:min(90vw,360px); height:min(90vw,360px); margin-top:1.5rem;}
+    .pk-flower{width:22px; height:22px; margin-left:-11px; margin-top:-11px;}
+    .pk-msg{
+      bottom:-2.2rem;
+      max-width:70vw;
+      white-space:normal;
+      text-align:center;
+      font-size:.96rem;
+    }
+    .game-hud{
+      display:none;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      width:100%;
+      max-width:360px;
+      justify-content:center;
+      gap:.5rem .75rem;
+      font-size:.68rem;
+      letter-spacing:.07em;
+    }
+    .game-hud span{text-align:center;}
+    .game-area{
+      width:100%;
+      max-width:360px;
+      height:min(44svh, 360px);
+      min-height:250px;
+      max-height:360px;
+      border-radius:10px;
+    }
+    .game-placeholder{font-size:1rem;}
+    .cards-grid{
+      grid-template-columns:1fr;
+      width:100%;
+      max-width:340px;
+      gap:1rem;
+      margin-top:2rem;
+    }
+    .wish-card{padding:1.55rem 1.2rem;}
+    .signature{font-size:.68rem; letter-spacing:.12em; max-width:22rem;}
+    .replay-btn{font-size:.7rem; letter-spacing:.14em; min-height:44px; padding:.6rem .25rem;}
+    #music-toggle{right:14px; bottom:14px; width:42px; height:42px;}
+    .butterfly{font-size:19px;}
+    #butterfly2{font-size:16px;}
+    .petal{font-size:14px;}
+
+    #opening{
+      background-image:
+        linear-gradient(180deg, rgba(255,253,248,.96) 0%, rgba(255,247,223,.82) 100%),
+        url('lamp-bg.png');
+      background-position:center;
+    }
+    #hero{
+      background-image:
+        linear-gradient(180deg, rgba(255,253,247,.7) 0%, rgba(255,247,223,.58) 45%, rgba(255,253,247,.94) 100%),
+        url('hero-bg.png');
+      background-position:center;
+    }
+    .ivory-section,
+    #final-message{
+      background-image:
+        linear-gradient(180deg, rgba(255,253,248,.92) 0%, rgba(255,247,223,.9) 100%),
+        url('temple-bg.png');
+      background-position:center;
+    }
+    #wish{
+      background-image:
+        linear-gradient(180deg, rgba(255,253,248,.95) 0%, rgba(255,247,223,.86) 100%),
+        url('lamp-bg.png');
+      background-position:center;
+    }
+    #justforyou{
+      background-image:
+        linear-gradient(180deg, rgba(255,253,248,.93) 0%, rgba(255,247,223,.88) 100%),
+        url('kathakali-bg.png');
+      background-position:center top;
+    }
+    #final-screen{
+      background-image:
+        linear-gradient(180deg, rgba(255,253,247,.78) 0%, rgba(255,247,223,.72) 48%, rgba(255,253,247,.96) 100%),
+        url('maveli-bg.jpg.jpeg');
+      background-position:center;
+    }
+  }
+
+  @media(max-width:380px){
+    .section{padding-left:.85rem; padding-right:.85rem;}
+    .heading{font-size:clamp(1.65rem, 10vw, 2.2rem);}
+    .hero-title,.final-title{font-size:clamp(1.9rem, 13vw, 2.8rem);}
+    .body-text{font-size:1rem;}
+    .enter-btn{letter-spacing:.11em; font-size:.68rem;}
+    .game-hud{font-size:.62rem;}
+    .pookalam-wrap{width:92vw; height:92vw;}
+    .pk-flower{width:20px; height:20px; margin-left:-10px; margin-top:-10px;}
+    .scroll-cue{display:none;}
+  }
+
+  @media(max-height:620px) and (orientation:landscape){
+    .section{
+      min-height:620px;
+      padding-top:3rem;
+      padding-bottom:3rem;
+    }
+    .scroll-cue{display:none;}
+    .game-area{height:300px; min-height:240px;}
+    .pookalam-wrap{width:min(58vh,360px); height:min(58vh,360px);}
+    .cards-grid{margin-top:1.5rem;}
+  }
+
+  @media(max-width:900px) and (orientation:landscape){
+    .section{
+      min-height:auto;
+      padding-top:3rem;
+      padding-bottom:3rem;
+    }
+    #hero,
+    #opening,
+    #final-screen{min-height:100svh;}
+    .pookalam-wrap{width:min(60vmin,340px); height:min(60vmin,340px);}
+  }
+
+  @media(hover:none){
+    .enter-btn:hover{
+      transform:none;
+      box-shadow:0 14px 32px -20px rgba(141,104,24,.6), inset 0 1px 0 rgba(255,255,255,.7);
+    }
+    .replay-btn:hover{
+      opacity:.75;
+      letter-spacing:.2em;
+      transform:none;
+    }
+    .wish-card:hover{transform:translateY(0) rotate(0deg); box-shadow:none;}
+    .pk-flower:hover{transform:scale(1);}
+  }
+
+  @media(pointer:coarse){
+    #global-petals .petal:nth-child(n+17){display:none;}
+    .game-petal{font-size:30px;}
+    .game-petal.golden{font-size:34px;}
+  }
+
+  @media(min-width:1200px){
+    .section{padding-left:8vw; padding-right:8vw;}
+    .body-text{max-width:720px;}
+    .msg-line{max-width:760px;}
+    .cards-grid{grid-template-columns:repeat(4,minmax(180px,240px));}
+    #hero{background-position:center 42%;}
+    #final-screen{background-position:center 36%;}
+  }
+
+  @media(prefers-reduced-motion:reduce){
+    *{animation-duration:.01ms !important; transition-duration:.01ms !important;}
+  }
+
+  .divider{
+    width:40px; height:1px;
+    background:var(--gold-dim);
+    margin:1.6rem auto;
+    opacity:.7;
+  }
+</style>
+</head>
+<body>
+
+<!-- ================= OPENING ================= -->
+<section id="opening" class="section">
+  <div id="opening-lines">
+    <p class="heading fade-line" data-line>This Onam&hellip;</p>
+    <p class="heading fade-line" data-line style="margin-top:.6rem;">I wanted to create something a little special.</p>
+    <p class="heading fade-line" data-line style="margin-top:.6rem; color:var(--gold-light);">Especially for you.</p>
+  </div>
+  <button class="enter-btn" id="enter-btn">Enter the Surprise ✦</button>
+</section>
+
+<!-- ================= MAIN SITE ================= -->
+<div id="main-site">
+
+  <!-- 1. HERO -->
+  <section id="hero" class="section">
+    <div class="pookalam-ring"></div>
+    <div class="hero-content">
+      <p class="eyebrow fade-line" data-reveal>Onam · 2026</p>
+      <h1 class="hero-title fade-line" data-reveal>Happy Onam, Sowmi <span style="display:inline-block;">🦋</span> <span style="display:inline-block;">🌼</span></h1>
+      <p class="hero-sub fade-line" data-reveal>A little celebration, made with a little extra thought&hellip; just for you.</p>
+    </div>
+    <div class="scroll-cue"><span></span>DISCOVER</div>
+  </section>
+
+  <!-- 2. PERSONAL MESSAGE -->
+  <section id="message" class="section ivory-section">
+    <p class="eyebrow fade-line" data-reveal>A Little Wish</p>
+    <h2 class="heading fade-line" data-reveal style="color:var(--text-dark); margin-bottom:2rem;">A Little Wish For You</h2>
+    <p class="msg-line fade-line" data-reveal>Some people are simply special.</p>
+    <p class="msg-line fade-line" data-reveal>Not because of a particular moment, but because their presence makes things feel a little brighter.</p>
+    <p class="msg-line fade-line" data-reveal style="margin-top:1.2rem;">So this Onam, I wanted to send you something more than just a greeting.</p>
+    <p class="msg-line strong fade-line" data-reveal style="margin-top:1.2rem; color:var(--saffron);">Just a small reminder that you are genuinely special to me.</p>
+  </section>
+
+  <!-- 3. ONAM WISH -->
+  <section id="wish" class="section">
+    <p class="eyebrow fade-line" data-reveal>My Wish For You</p>
+    <h2 class="heading fade-line" data-reveal style="margin-bottom:2rem;">My Wish For You</h2>
+    <p class="body-text fade-line" data-reveal>May this Onam bring you peaceful days, genuine happiness, beautiful surprises, and countless reasons to smile.</p>
+    <p class="body-text fade-line" data-reveal style="margin-top:1.4rem;">May every new day bring you something worth being grateful for.</p>
+    <p class="body-text fade-line" data-reveal style="margin-top:1.4rem; color:var(--gold-light); font-style:italic;">And may this festive season be as beautiful as the person it is meant for.</p>
+  </section>
+
+  <!-- 4. INTERACTIVE POOKALAM -->
+  <section id="pookalam-section" class="section">
+    <p class="eyebrow fade-line" data-reveal>Touch The Flowers</p>
+    <h2 class="heading fade-line" data-reveal>A Little Pookalam</h2>
+    <p class="body-text fade-line" data-reveal style="font-size:1rem; opacity:.75; margin-top:.6rem;">Tap a petal to find a little wish inside.</p>
+    <div class="pookalam-wrap" id="pookalam"></div>
+  </section>
+
+  <!-- 5. PETAL CATCH GAME -->
+  <section id="petal-game" class="section">
+    <p class="eyebrow fade-line" data-reveal>A Little Game</p>
+    <h2 class="heading fade-line" data-reveal>Catch The Onam Petals</h2>
+    <p class="body-text fade-line" data-reveal style="font-size:1rem; opacity:.8; margin-top:.6rem;">Tap the flowers before they fall past you. Golden blooms are worth more ✨</p>
+    <div class="game-hud" id="game-hud">
+      <span>Score: <b id="game-score">0</b></span>
+      <span>Combo: <b id="game-combo">x1</b></span>
+      <span>Best: <b id="game-best">0</b></span>
+      <span>Time: <b id="game-timer">20</b>s</span>
+    </div>
+    <div class="game-area" id="game-area">
+      <p class="game-placeholder" id="game-placeholder">Press start, then tap the flowers as they fall.</p>
+    </div>
+    <button class="enter-btn" id="game-start-btn" style="opacity:1; margin-top:1.6rem;">Start Game ✦</button>
+    <p class="game-result" id="game-result"></p>
+  </section>
+
+  <!-- 6. JUST FOR YOU -->
+  <section id="justforyou" class="section">
+    <p class="eyebrow fade-line" data-reveal>Just For You</p>
+    <h2 class="heading fade-line" data-reveal>Just For You</h2>
+    <p class="body-text fade-line" data-reveal style="margin-top:1.6rem;">There are many people in the world, but only a few become genuinely special.</p>
+    <p class="body-text fade-line" data-reveal style="margin-top:1.2rem;">This little website is simply my way of making your Onam a tiny bit more beautiful.</p>
+    <p class="whisper fade-line" data-reveal>No big words.<br>Just a beautiful wish for someone special.</p>
+  </section>
+
+  <!-- 7. LITTLE WISHES -->
+  <section id="little-wishes" class="section">
+    <p class="eyebrow fade-line" data-reveal>Little Wishes</p>
+    <h2 class="heading fade-line" data-reveal style="color:var(--text-dark);">Little Wishes</h2>
+    <div class="cards-grid" id="cards-grid">
+      <div class="wish-card"><h3>Happiness</h3><p>May you always have reasons to smile.</p></div>
+      <div class="wish-card"><h3>Peace</h3><p>May your heart always find peaceful moments.</p></div>
+      <div class="wish-card"><h3>Dreams</h3><p>May the things you wish for find their way to you.</p></div>
+      <div class="wish-card"><h3>Beautiful Days</h3><p>May the days ahead bring you wonderful surprises.</p></div>
+    </div>
+  </section>
+
+  <!-- 8. FINAL CINEMATIC MESSAGE -->
+  <section id="final-message" class="section">
+    <p class="eyebrow fade-line" data-reveal>One Last Wish&hellip;</p>
+    <h2 class="heading fade-line" data-reveal style="margin-bottom:1.6rem;">One Last Wish&hellip;</h2>
+    <p class="body-text fade-line" data-reveal style="font-style:italic;">Keep smiling.<br>Keep shining.<br>Keep being wonderfully you.</p>
+    <p class="body-text fade-line" data-reveal style="margin-top:1.6rem; color:var(--gold-light);">And may this Onam bring you more happiness than you expect.</p>
+  </section>
+
+  <!-- 9. FINAL SCREEN -->
+  <section id="final-screen" class="section">
+    <h1 class="final-title fade-line" data-reveal>Happy Onam 🌼</h1>
+    <p class="body-text fade-line" data-reveal style="color:var(--gold-light);">To someone who is truly special.</p>
+    <p class="body-text fade-line" data-reveal style="margin-top:.8rem;">Wishing you a beautiful Onam.</p>
+    <div class="divider"></div>
+    <p class="signature fade-line" data-reveal>Made with a little thought &amp; a lot of warmth ✨</p>
+    <button class="replay-btn" id="replay-btn">Replay the Moment ↻</button>
+  </section>
+
+</div>
+
+<!-- global floating flowers -->
+<div id="global-petals" style="position:fixed; inset:0; pointer-events:none; z-index:5; overflow:hidden;"></div>
+
+<!-- flying butterflies -->
+<div class="butterfly" id="butterfly"><span class="bob"><span class="flap">🦋</span></span></div>
+<div class="butterfly" id="butterfly2"><span class="bob"><span class="flap">🦋</span></span></div>
+
+<!-- background music -->
+<audio id="bg-music" src="Anuraaga.mpeg" loop preload="auto"></audio>
+
+<!-- music toggle -->
+<button id="music-toggle" aria-label="Toggle music">
+  <div class="music-bars paused" id="music-bars">
+    <span class="music-bar"></span><span class="music-bar"></span><span class="music-bar"></span>
+  </div>
+</button>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script>
+gsap.registerPlugin(ScrollTrigger);
+
+/* ---------- game flower set ---------- */
+const FLOWER_EMOJIS = ['\uD83C\uDF38','\uD83C\uDF3C','\uD83C\uDFF5\uFE0F','\uD83C\uDF3A'];
+
+function spawnPetals(container, count){
+  const el = document.getElementById(container);
+  if(!el) return;
+  for(let i=0;i<count;i++){
+    const p = document.createElement('div');
+    p.className = 'petal';
+    p.textContent = FLOWER_EMOJIS[Math.floor(Math.random()*FLOWER_EMOJIS.length)];
+    const dur = 11 + Math.random()*10;
+    p.style.left = Math.random()*100 + '%';
+    p.style.fontSize = 10 + Math.random()*10 + 'px';
+    p.style.animation = `petalFall ${dur}s cubic-bezier(.42,0,.58,1) ${Math.random()*10}s infinite`;
+    p.style.setProperty('--drift', Math.random()*120 - 60 + 'px');
+    p.style.setProperty('--spin', 180 + Math.random()*300 + 'deg');
+    el.appendChild(p);
+  }
+}
+
+spawnPetals('global-petals', 28);
+
+/* ---------- flying butterfly ---------- */
+function flyButterfly(id, startXRatio, startYRatio, speedMin, speedMax){
+  const b = document.getElementById(id);
+  let curX = window.innerWidth*startXRatio;
+  gsap.set(b, {x: curX, y: window.innerHeight*startYRatio, opacity:0, scaleX:1});
+  gsap.to(b, {opacity:.95, duration:1.2, delay:1+Math.random()});
+
+  function nextFlight(){
+    const w = window.innerWidth, h = window.innerHeight;
+    const targetX = 40 + Math.random()*(w-80);
+    const targetY = 80 + Math.random()*(h-200);
+    const flipRight = targetX >= curX;
+    gsap.to(b, {
+      x: targetX, y: targetY,
+      scaleX: flipRight ? 1 : -1,
+      duration: speedMin + Math.random()*(speedMax-speedMin),
+      ease:'sine.inOut',
+      onComplete: ()=>{ curX = targetX; nextFlight(); }
+    });
+    gsap.to(b, {
+      rotation: (flipRight ? 1 : -1) * (4 + Math.random()*6),
+      duration: 1.6,
+      yoyo:true,
+      repeat:3,
+      ease:'sine.inOut'
+    });
+  }
+  nextFlight();
+}
+
+/* ---------- opening sequence ---------- */
+const openingTl = gsap.timeline({delay:.4});
+openingTl.to('#opening-lines [data-line]:nth-child(1)', {opacity:1, y:0, filter:'blur(0px)', duration:1.3, ease:'power3.out'})
+  .to('#opening-lines [data-line]:nth-child(1)', {opacity:0, y:-10, filter:'blur(3px)', duration:.9, ease:'power1.in'}, '+=1.1')
+  .to('#opening-lines [data-line]:nth-child(2)', {opacity:1, y:0, filter:'blur(0px)', duration:1.3, ease:'power3.out'})
+  .to('#opening-lines [data-line]:nth-child(2)', {opacity:0, y:-10, filter:'blur(3px)', duration:.9, ease:'power1.in'}, '+=1.3')
+  .to('#opening-lines [data-line]:nth-child(3)', {opacity:1, y:0, filter:'blur(0px)', duration:1.4, ease:'power3.out'})
+  .to('.enter-btn', {opacity:1, duration:1, ease:'power1.out'}, '-=.4');
+
+document.getElementById('enter-btn').addEventListener('click', enterSite);
+
+function enterSite(){
+  startMusic();
+  gsap.to('#opening', {opacity:0, duration:1.1, ease:'power2.inOut', onComplete:()=>{
+    document.getElementById('opening').style.display='none';
+    const main = document.getElementById('main-site');
+    main.style.display='block';
+    window.scrollTo(0,0);
+    initScrollReveals();
+    flyButterfly('butterfly', 0.15, 0.4, 4, 7);
+    flyButterfly('butterfly2', 0.75, 0.6, 5, 8);
+  }});
+}
+
+/* ---------- scroll reveals ---------- */
+function initScrollReveals(){
+  gsap.utils.toArray('#hero [data-reveal]').forEach((el,i)=>{
+    gsap.to(el,{opacity:1, y:0, filter:'blur(0px)', duration:1.3, delay:.18*i, ease:'power3.out'});
+  });
+
+  document.querySelectorAll('[data-reveal]').forEach(el=>{
+    if(el.closest('#hero')) return;
+    gsap.fromTo(el, {opacity:0, y:30, filter:'blur(5px)'}, {
+      opacity:1, y:0, filter:'blur(0px)', duration:1.2, ease:'power3.out',
+      scrollTrigger:{ trigger: el, start:'top 85%' }
+    });
+  });
+
+  gsap.utils.toArray('.wish-card').forEach((card,i)=>{
+    gsap.to(card, {
+      opacity:1, y:0, rotation:0, duration:1, delay:i*.13, ease:'back.out(1.6)',
+      scrollTrigger:{ trigger:'#cards-grid', start:'top 82%' }
+    });
+  });
+
+  /* subtle parallax on hero elements while scrolling */
+  gsap.to('.pookalam-ring', {
+    y: 80, rotation: 8, ease:'none',
+    scrollTrigger:{ trigger:'#hero', start:'top top', end:'bottom top', scrub:1 }
+  });
+  gsap.to('.hero-content', {
+    y: -40, opacity:.4, ease:'none',
+    scrollTrigger:{ trigger:'#hero', start:'top top', end:'bottom top', scrub:1 }
+  });
+
+  buildPookalam();
+}
+
+/* ---------- interactive pookalam ---------- */
+function buildPookalam(){
+  const wrap = document.getElementById('pookalam');
+  if(wrap.dataset.built === 'true') return;
+  wrap.dataset.built = 'true';
+  const colors = ['#fffdf7','#f6dc84','#c39220','#f2c94c','#b57f14'];
+  const msgs = ['A little happiness 🌼','A little peace ✨','A little sunshine ☀️','A little magic 💫','A lot of smiles 😊'];
+  const rings = [1,2,3];
+  const center = document.createElement('div');
+  center.className='pk-center';
+  center.style.position='absolute';
+  center.style.top='50%'; center.style.left='50%';
+  center.style.transform='translate(-50%,-50%)';
+  wrap.appendChild(center);
+
+  let count = 0;
+  rings.forEach((ring, ri)=>{
+    const num = 6 + ri*4;
+    const radius = 16 + ri*14;
+    for(let i=0;i<num;i++){
+      const angle = (i/num)*Math.PI*2 + ri*0.3;
+      const x = 50 + radius*Math.cos(angle);
+      const y = 50 + radius*Math.sin(angle);
+      const f = document.createElement('div');
+      f.className='pk-flower';
+      f.style.left = x+'%';
+      f.style.top = y+'%';
+      f.style.background = `radial-gradient(circle at 35% 35%, ${colors[(ri+i)%colors.length]}, ${colors[(ri+i+2)%colors.length]})`;
+      f.style.boxShadow = '0 8px 18px -10px rgba(141,104,24,.8), inset 0 1px 0 rgba(255,255,255,.7)';
+      const msg = document.createElement('span');
+      msg.className='pk-msg';
+      msg.textContent = msgs[count % msgs.length];
+      f.appendChild(msg);
+      f.addEventListener('click', ()=>{
+        document.querySelectorAll('.pk-flower.active').forEach(a=>a.classList.remove('active'));
+        f.classList.add('active');
+        setTimeout(()=>f.classList.remove('active'), 2200);
+      });
+      wrap.appendChild(f);
+      gsap.to(f, {
+        opacity:1, scale:1, rotation:360, duration:.85, ease:'back.out(1.9)',
+        scrollTrigger:{ trigger: wrap, start:'top 75%' },
+        delay: (ri*0.15)+(i*0.05)
+      });
+      count++;
+    }
+  });
+}
+
+function pauseAmbientPetals(){
+  document.querySelectorAll('#global-petals .petal').forEach(el=>{
+    el.style.animationPlayState = 'paused';
+    el.style.opacity = '0';
+  });
+}
+function resumeAmbientPetals(){
+  document.querySelectorAll('#global-petals .petal').forEach(el=>{
+    el.style.animationPlayState = 'running';
+    el.style.opacity = '';
+  });
+}
+
+/* ---------- petal-catch mini game ---------- */
+const GAME_DURATION = 20;
+let gameActive = false;
+let gameScore = 0;
+let gameTimeLeft = GAME_DURATION;
+let gameSpawnInterval = null;
+let gameCountdownInterval = null;
+let gameCombo = 0;
+let gameBest = 0;
+let gameAudioCtx = null;
+
+/* best score persistence (falls back silently if storage isn't available) */
+async function loadBestScore(){
+  try{
+    if(window.storage){
+      const res = await window.storage.get('petal-game-best-score');
+      if(res && res.value) return parseInt(res.value, 10) || 0;
+    }
+  }catch(e){ /* no stored score yet */ }
+  return 0;
+}
+async function saveBestScore(score){
+  try{
+    if(window.storage){ await window.storage.set('petal-game-best-score', String(score)); }
+  }catch(e){ /* storage unavailable, best score just stays in-memory */ }
+}
+loadBestScore().then(v=>{
+  gameBest = v;
+  const el = document.getElementById('game-best');
+  if(el) el.textContent = gameBest;
+});
+
+/* tiny synthesized catch sound, no audio file needed */
+function playGameTone(freq, duration){
+  try{
+    if(!gameAudioCtx) gameAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = gameAudioCtx.createOscillator();
+    const gain = gameAudioCtx.createGain();
+    osc.type = 'sine';
+    osc.frequency.value = freq;
+    gain.gain.setValueAtTime(0.14, gameAudioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, gameAudioCtx.currentTime + duration);
+    osc.connect(gain).connect(gameAudioCtx.destination);
+    osc.start();
+    osc.stop(gameAudioCtx.currentTime + duration);
+  }catch(e){ /* audio unsupported, fail silently */ }
+}
+
+function comboMultiplier(){
+  if(gameCombo >= 10) return 3;
+  if(gameCombo >= 5) return 2;
+  return 1;
+}
+
+function startPetalGame(){
+  if(gameActive) return;
+  gameActive = true;
+  gameScore = 0;
+  gameCombo = 0;
+  gameTimeLeft = GAME_DURATION;
+  document.getElementById('game-score').textContent = gameScore;
+  document.getElementById('game-combo').textContent = 'x1';
+  document.getElementById('game-timer').textContent = gameTimeLeft;
+  document.getElementById('game-hud').style.display = 'flex';
+  document.getElementById('game-placeholder').style.display = 'none';
+  document.getElementById('game-result').textContent = '';
+  document.getElementById('game-start-btn').textContent = 'Restart ✦';
+  document.getElementById('game-area').classList.add('active');
+  pauseAmbientPetals();
+  clearGamePetals();
+  scheduleSpawn(650);
+  gameCountdownInterval = setInterval(()=>{
+    gameTimeLeft--;
+    document.getElementById('game-timer').textContent = Math.max(gameTimeLeft, 0);
+    const elapsed = GAME_DURATION - gameTimeLeft;
+    if(elapsed === 6) scheduleSpawn(520);
+    if(elapsed === 12) scheduleSpawn(400);
+    if(elapsed === 17) scheduleSpawn(320);
+    if(gameTimeLeft <= 0) endPetalGame();
+  }, 1000);
+}
+
+function scheduleSpawn(delay){
+  clearInterval(gameSpawnInterval);
+  gameSpawnInterval = setInterval(spawnGamePetal, delay);
+}
+
+function spawnGamePetal(){
+  const area = document.getElementById('game-area');
+  if(!area) return;
+  const petal = document.createElement('div');
+  const isGolden = Math.random() < 0.16;
+  petal.className = isGolden ? 'game-petal golden' : 'game-petal';
+  petal.textContent = isGolden ? '🌟' : FLOWER_EMOJIS[Math.floor(Math.random()*FLOWER_EMOJIS.length)];
+  petal.dataset.points = isGolden ? 3 : 1;
+  petal.dataset.caught = 'false';
+  const left = 6 + Math.random()*82;
+  petal.style.left = left+'%';
+  petal.style.setProperty('--drift', Math.round(Math.random()*60-30));
+  const dur = 2.6 + Math.random()*2.2;
+  petal.style.animation = isGolden
+    ? `gamePetalFall ${dur}s linear forwards, goldenPulse .5s ease-in-out infinite`
+    : `gamePetalFall ${dur}s linear forwards`;
+  petal.addEventListener('pointerdown', catchPetal);
+  petal.addEventListener('animationend', (ev)=>{
+    if(ev.animationName !== 'gamePetalFall') return;
+    if(petal.dataset.caught !== 'true') handleMiss();
+    petal.remove();
+  });
+  area.appendChild(petal);
+}
+
+function handleMiss(){
+  gameCombo = 0;
+  document.getElementById('game-combo').textContent = 'x1';
+  const area = document.getElementById('game-area');
+  area.classList.remove('miss-flash');
+  void area.offsetWidth;
+  area.classList.add('miss-flash');
+}
+
+function spawnSparkles(area, x, y){
+  for(let i=0;i<7;i++){
+    const s = document.createElement('div');
+    s.className = 'game-spark';
+    s.style.left = x+'px';
+    s.style.top = y+'px';
+    const angle = Math.random()*Math.PI*2;
+    const dist = 24 + Math.random()*22;
+    s.style.setProperty('--sx', (Math.cos(angle)*dist)+'px');
+    s.style.setProperty('--sy', (Math.sin(angle)*dist)+'px');
+    area.appendChild(s);
+    setTimeout(()=>s.remove(), 600);
+  }
+}
+
+function showComboToast(area, text){
+  const toast = document.createElement('div');
+  toast.className = 'game-combo-toast';
+  toast.textContent = text;
+  area.appendChild(toast);
+  setTimeout(()=>toast.remove(), 1150);
+}
+
+function catchPetal(e){
+  const petal = e.currentTarget;
+  if(!petal.parentNode || petal.dataset.caught === 'true') return;
+  petal.dataset.caught = 'true';
+  const area = document.getElementById('game-area');
+  const areaRect = area.getBoundingClientRect();
+  const petalRect = petal.getBoundingClientRect();
+  const relX = petalRect.left - areaRect.left + petalRect.width/2;
+  const relY = petalRect.top - areaRect.top + petalRect.height/2;
+  const isGolden = petal.classList.contains('golden');
+
+  gameCombo++;
+  const mult = comboMultiplier();
+  const basePts = parseInt(petal.dataset.points, 10);
+  const pts = basePts * mult;
+  gameScore += pts;
+  document.getElementById('game-score').textContent = gameScore;
+  document.getElementById('game-combo').textContent = 'x'+mult;
+
+  const plus = document.createElement('div');
+  plus.className = 'game-plus';
+  plus.textContent = '+'+pts;
+  plus.style.left = (relX-10)+'px';
+  plus.style.top = (relY-14)+'px';
+  area.appendChild(plus);
+  setTimeout(()=>plus.remove(), 820);
+
+  if(isGolden){
+    spawnSparkles(area, relX, relY);
+    playGameTone(980, .22);
+  } else {
+    playGameTone(600 + mult*80, .16);
+  }
+
+  if(gameCombo === 5 || gameCombo === 10){
+    showComboToast(area, `Combo x${mult}! ✨`);
+  }
+
+  petal.remove();
+}
+
+function clearGamePetals(){
+  document.querySelectorAll('.game-petal').forEach(p=>p.remove());
+  document.querySelectorAll('.game-plus, .game-spark, .game-combo-toast').forEach(p=>p.remove());
+}
+
+function endPetalGame(){
+  clearInterval(gameSpawnInterval);
+  clearInterval(gameCountdownInterval);
+  gameActive = false;
+  clearGamePetals();
+  document.getElementById('game-area').classList.remove('active');
+  resumeAmbientPetals();
+
+  const isNewBest = gameScore > gameBest;
+  if(isNewBest){
+    gameBest = gameScore;
+    document.getElementById('game-best').textContent = gameBest;
+    saveBestScore(gameBest);
+  }
+
+  let msg;
+  if(gameScore >= 24) msg = `${gameScore} points! You caught them like a true Onam star ✨`;
+  else if(gameScore >= 12) msg = `${gameScore} points! Lovely reflexes 🌼`;
+  else msg = `${gameScore} points! Sweet try — give it another go 🌸`;
+  if(isNewBest) msg += ' — New Best! 🏆';
+  document.getElementById('game-result').textContent = msg;
+  document.getElementById('game-start-btn').textContent = 'Play Again ✦';
+}
+
+document.getElementById('game-start-btn').addEventListener('click', startPetalGame);
+
+/* ---------- replay ---------- */
+document.getElementById('replay-btn').addEventListener('click', ()=>{
+  window.scrollTo({top:0, behavior:'instant'});
+  document.getElementById('main-site').style.display='none';
+  clearInterval(gameSpawnInterval);
+  clearInterval(gameCountdownInterval);
+  gameActive = false;
+  gameCombo = 0;
+  clearGamePetals();
+  document.getElementById('game-area').classList.remove('active');
+  resumeAmbientPetals();
+  document.getElementById('game-hud').style.display='none';
+  document.getElementById('game-placeholder').style.display='block';
+  document.getElementById('game-result').textContent='';
+  document.getElementById('game-start-btn').textContent='Start Game ✦';
+  bgMusic.pause();
+  bgMusic.currentTime = 0;
+  musicPlaying = false;
+  document.getElementById('music-bars').classList.add('paused');
+  const opening = document.getElementById('opening');
+  opening.style.display='flex';
+  gsap.set(opening, {opacity:1});
+  gsap.set('#opening-lines [data-line]', {opacity:0, y:24});
+  gsap.set('.enter-btn', {opacity:0});
+  openingTl.restart();
+});
+
+/* ---------- background music (user-provided track) ---------- */
+const bgMusic = document.getElementById('bg-music');
+bgMusic.volume = 0.55;
+let musicPlaying = false;
+
+function startMusic(){
+  bgMusic.play().then(()=>{
+    musicPlaying = true;
+    document.getElementById('music-bars').classList.remove('paused');
+  }).catch(()=>{
+    /* autoplay blocked until a user gesture; toggle button click will retry */
+  });
+}
+function stopMusic(){
+  bgMusic.pause();
+  musicPlaying = false;
+  document.getElementById('music-bars').classList.add('paused');
+}
+document.getElementById('music-toggle').addEventListener('click', ()=>{
+  if(musicPlaying) stopMusic(); else startMusic();
+});
+</script>
+</body>
+</html>
